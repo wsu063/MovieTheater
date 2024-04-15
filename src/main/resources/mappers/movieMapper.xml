@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.MovieTheater.dao.MovieDao">
+
+    <resultMap id="Movie" type="Movie" >
+        <result column="movie_id" property="movieId" />
+        <result column="movie_subject" property="movieSubject" />
+        <result column="content" property="content" />
+        <result column="open_date" property="openDate" />
+        <result column="close_date" property="closeDate" />
+    </resultMap>
+
+<!-- 영화 리스트를 전부 가져오기-->
+<select id="getMovieList" resultType="Movie" resultMap="Movie">
+    SELECT movie_id, movie_subject, content, open_date, close_date
+    FROM movie
+</select>
+
+</mapper>

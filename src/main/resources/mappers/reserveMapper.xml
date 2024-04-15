@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.MovieTheater.dao.ReserveDao">
+    <resultMap id="Reserve" type="Reserve">
+        <result column="reserve_id" property="reserveId"/>
+        <result column="res_date" property="resDate"/>
+        <result column="price" property="price"/>
+        <result column="member_id" property="memberId"/>
+        <result column="seatId" property="seatId"/>
+        <collection property="member" resultMap="Member" />
+        <collection property="seat" resultMap="Seat"/>
+    </resultMap>
+
+    <resultMap id="Seat" type="Seat" >
+        <result column="seat_id" property="seatId" />
+        <result column="location" property="location" />
+        <result column="screen_id" property="screenId" />
+        <result column="movie_id" property="movieId" />
+        <association property="movie" resultMap="Movie"/>
+        <association property="screen" resultMap="Screen" />
+    </resultMap>
+
+    <resultMap id="Screen" type="Screen">
+        <result column="screen_id" property="screenId"/>
+        <result column="name" property="name"/>
+    </resultMap>
+
+    <resultMap id="Member" type="Member" >
+        <result column="member_id" property="memberId" />
+        <result column="email" property="email" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="reg_date" property="regDate" />
+        <result column="balance" property="balance" />
+    </resultMap>
+
+    <resultMap id="Movie" type="Movie" >
+        <result column="movie_id" property="movieId" />
+        <result column="movie_subject" property="movieSubject" />
+        <result column="content" property="content" />
+        <result column="open_date" property="openDate" />
+        <result column="close_date" property="closeDate" />
+    </resultMap>
+
+
+
+    <!-- 예매한 리스트 총 갯수를 가져오기 -->
+    <select id="getDataCount" parameterType="map" resultType="int">
+        SELECT
+        NVL(count(*), 0)
+        FROM review p
+        WHERE p.member_id = #{memberId}
+    </select>
+
+    <!-- 예매한 리스트를 가져오기-->
+    <select id="getReserveList" parameterType="map" resultType="Reserve" resultMap="Reserve">
+        SELECT
+            *
+        FROM RESERVE r
+        JOIN SEAT s ON r.SEAT_ID = s.SEAT_ID
+        JOIN MTMEMBER m ON r.MEMBER_ID = m.MEMBER_ID
+        JOIN MOVIE v ON s.MOVIE_ID = v.MOVIE_ID
+        JOIN SCREEN c ON s.SCREEN_ID = c.SCREEN_ID
+        WHERE m.MEMBER_ID = #{memberId}
+        ORDER BY r.reserve_ID DESC
+    </select>
+    <!-- 예매하기 -->
+    <select id="insertReserve" resultType="Reserve" resultMap="Reserve">
+        INSERT INTO reserve values(reserve_seq.nextval, #{resDate}, 0, #{memberId}, #{seatId})
+    </select>
+    <!-- 예매 취소하기 -->
+    <delete id="cancelReserve" parameterType="int" >
+        DELETE reserve where reserve_id = #{reserveId}
+    </delete>
+
+</mapper>

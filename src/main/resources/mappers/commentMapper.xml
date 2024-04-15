@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.MovieTheater.dao.CommentDao">
+    <resultMap id="Comment" type="Comment" >
+        <result column="comment_id" property="commentId" />
+        <result column="content" property="content" />
+        <result column="write_date" property="writeDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="review_id" property="reviewId" />
+        <result column="member_id" property="memberId" />
+        <collection property="review" resultMap="Review" />
+        <collection property="member" resultMap="Member" />
+    </resultMap>
+
+    <resultMap id="Review" type="Review">
+        <result column="review_id" property="reviewId"/>
+        <result column="subject" property="subject"/>
+        <result column="rate" property="rate"/>
+        <result column="content" property="content"/>
+        <result column="write_date" property="writeDate"/>
+        <result column="update_date" property="updateDate"/>
+        <result column="member_id" property="memberId"/>
+        <result column="movie_id" property="movieId"/>
+        <result column="views" property="views"/>
+        <collection property="movie" resultMap="Movie"/>
+        <collection property="member" resultMap="Member" />
+    </resultMap>
+
+    <resultMap id="Member" type="Member" >
+        <result column="member_id" property="memberId" />
+        <result column="email" property="email" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="reg_date" property="regDate" />
+        <result column="balance" property="balance" />
+    </resultMap>
+
+    <resultMap id="Movie" type="Movie" >
+        <result column="movie_id" property="movieId" />
+        <result column="movie_subject" property="movieSubject" />
+        <result column="content" property="content" />
+        <result column="open_date" property="openDate" />
+        <result column="close_date" property="closeDate" />
+    </resultMap>
+<select id="getComment" resultType="Comment" resultMap="Comment">
+    SELECT *
+    FROM MTCOMMENT c
+    JOIN MTMEMBER m ON c.MEMBER_ID = m.MEMBER_ID
+    JOIN REVIEW r ON c.REVIEW_ID = r.REVIEW_ID
+    WHERE c.review_id = #{reviewId}
+</select>
+<select id="insertComment" parameterType="Comment">
+    INSERT INTO MTCOMMENT m values(comment_seq.nextval,
+    #{content}, sysdate, sysdate, #{reviewId}, #{memberId})
+</select>
+<delete id="deleteComment" parameterType="int" >
+    DELETE FROM MTCOMMENT m WHERE comment_id = #{commentId}
+</delete>
+    <select id="getCommentById" parameterType="int" resultType="Comment" resultMap="Comment">
+        select * from mtComment where comment_id = #{commentId}
+    </select>
+
+</mapper>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout2}">
+<main layout:fragment="content" class="main">
+
+        <div>
+            <!-- Form Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">예매하기</h6>
+                            <form action="/reservation" method="post">
+                                <div class="mb-3">
+                                    <label for="resDate" class="form-label">예매할 날짜를 골라주세요.</label>
+                                    <input type="date" class="form-control" id="resDate" name="resDate"
+                                           aria-describedby="reserveHelp">
+                                </div>
+                                <div class="mb-3">
+                                    <p> 좌석을 골라주세요.</p>
+                                    <div class="mb-3" >
+                                        <select class="text-success" name="seatId" id="seatId">
+                                            <option  th:each="seat : ${seatList}" th:value="${seat.seatId}" th:text="${seat.movie.movieSubject} + '-' + ${seat.screen.name} + '-' +${seat.location}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">예매하기</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Form End -->
+        </div>
+        <!-- Content End -->
+
+
+
+
+</main>
+</html>

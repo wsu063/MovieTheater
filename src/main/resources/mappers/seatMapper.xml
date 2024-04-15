@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.MovieTheater.dao.SeatDao">
+    <resultMap id="Seat" type="Seat" >
+        <result column="seat_id" property="seatId" />
+        <result column="location" property="location" />
+        <result column="screen_id" property="screenId" />
+        <result column="movie_id" property="movieId" />
+        <association property="movie" resultMap="Movie"/>
+        <association property="screen" resultMap="Screen" />
+    </resultMap>
+    <resultMap id="Movie" type="Movie" >
+        <result column="movie_id" property="movieId" />
+        <result column="movie_subject" property="movieSubject" />
+        <result column="content" property="content" />
+        <result column="open_date" property="openDate" />
+        <result column="close_date" property="closeDate" />
+    </resultMap>
+    <resultMap id="Screen" type="Screen" >
+        <result column="screen_id" property="screenId" />
+        <result column="name" property="name" />
+    </resultMap>
+
+    <!-- 좌석을 전부 가져오기-->
+    <select id="getSeatListAll" resultType="Seat" resultMap="Seat">
+        SELECT *
+        FROM SEAT s
+        JOIN SCREEN c ON s.SCREEN_ID = c.SCREEN_ID
+        JOIN MOVIE M ON s.MOVIE_ID = m.MOVIE_ID
+    </select>
+
+    <!-- 좌석을 screenId에 따라서 가져오기-->
+    <select id="getSeatList" parameterType="int" resultType="Seat" resultMap="Seat">
+        SELECT s.seat_id, s.location, s.screen_id, s.movie_id
+        FROM SEAT s
+        JOIN SCREEN c ON s.SCREEN_ID = c.SCREEN_ID
+        WHERE s.SCREEN_ID = #{screenId}
+    </select>
+
+</mapper>

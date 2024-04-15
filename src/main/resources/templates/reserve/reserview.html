@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout2}">
+<main layout:fragment="content" class="main">
+    <div class="container-fluid position-relative d-flex p-0">
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Table Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">예매 리스트</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">영화</th>
+                                        <th scope="col">상영관</th>
+                                        <th scope="col">좌석</th>
+                                        <th scope="col">예매자</th>
+                                        <th scope="col">날짜</th>
+                                        <th scope="col">#</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr  th:each="reserve:${reserveList}">
+                                            <th scope="row" th:text="${reserve.reserveId}"></th>
+                                            <td th:text="${reserve.seat.movie.movieSubject}"></td>
+                                            <td th:text="${reserve.seat.screen.name}"></td>
+                                            <td th:text="${reserve.seat.location}"></td>
+                                            <td th:text="${reserve.memberId}"></td>
+                                            <td th:text="${reserve.resDate}"></td>
+                                            <td><a th:onclick="'cancelReserve(\'' + ${reserve.reserveId} + '\'); return false;'" style="cursor:pointer;">예매 취소</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
+                        <a href="/reserve" type="button" class="btn btn-primary m-2">예매하러 가기<i class="fa fa-home ms-2"></i></a>
+                    </div>
+                </div>
+                <!-- Table End -->
+            </div>
+        </div>
+    </div>
+</main>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+    function cancelReserve(reserveId) {
+    const result = confirm("해당 예약을 취소하시겠습니까?");
+    const url = '/cancel/' + reserveId; // request URL
+
+    if(result) {
+    $.ajax({
+    url : url,
+    type : "DELETE", // 전송방식
+    contentType : "application/json",
+    dataType : "json",
+    cache : false,
+    success : function(result, status) {
+    console.log("result reserveId: " + result + ", statusCode: " + status);
+    location.href = '/reserview';
+    },
+    error : function(jqXHR, status, error) {
+    console.log("result: " + jqXHR.responseText + ", statusCode: " + status);
+
+
+    if(jqXHR.status == '401') { // UNATHORIZED
+    location.href = '/login';
+    } else {
+    alert(jqXHR.responseText);
+    }
+    }
+    });
+    }
+    }
+    </script>
+</th:block>
+
+</html>

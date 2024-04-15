@@ -1,0 +1,75 @@
+@charset "utf-8";
+
+/* 메인 */
+
+h2 {
+   padding: 30px;
+   font-size: 30px;
+}
+.poster {
+   display: flex;
+   justify-content: space-around;
+}
+
+.poster-onef,
+.poster-twof,
+.poster-threef,
+.poster-fourf {
+   width: 20%;
+   display: flex;
+   flex-wrap: wrap;
+   margin-top: 20px;
+}
+
+/* 스와이퍼 공통 */
+.swiper {
+   width: 100%;
+   height: 100%;
+}
+.swiper-slide {
+   text-align: center;
+   font-size: 18px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.swiper-slide img {
+   display: block;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+/* 메인포스터 */
+.mySwiper-main,
+.mySwiper-main2,
+.mySwiper-main3,
+.mySwiper-main4 {
+   height: 80%;
+   width: 100%;
+}
+
+.mySwiper-sub,
+.mySwiper-sub2,
+.mySwiper-sub3,
+.mySwiper-sub4 {
+   height: 20%;
+   box-sizing: border-box;
+   padding: 10px 0;
+}
+
+.mySwiper-sub .swiper-slide,
+.mySwiper-sub2 .swiper-slide,
+.mySwiper-sub3 .swiper-slide,
+.mySwiper-sub4 .swiper-slide {
+   width: 25%;
+   height: 100%;
+   opacity: 0.4;
+}
+
+.mySwiper-sub .swiper-slide-thumb-active,
+.mySwiper-sub2 .swiper-slide-thumb-active,
+.mySwiper-sub3 .swiper-slide-thumb-active,
+.mySwiper-sub4 .swiper-slide-thumb-active {
+   opacity: 1;
+}

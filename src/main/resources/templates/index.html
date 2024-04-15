@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<!-- 각 페이지의 CSS가 작성될 위치지정 -->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{css/index.css}" />
+</th:block>
+    <main layout:fragment="content" class="main container">
+        <!-- 메인 화면 Big poster -->
+        <div class="poster">
+            <div class="poster-onef">
+                <div
+                        style="
+                        --swiper-navigation-color: #fff;
+                        --swiper-pagination-color: #fff;
+                     "
+                        class="swiper mySwiper-main"
+                >
+                    <div class="swiper-wrapper sw-main1"></div>
+                </div>
+                <div class="swiper mySwiper-sub">
+                    <div class="swiper-wrapper sw-sub1"></div>
+                </div>
+            </div>
+            <div class="poster-twof">
+                <div
+                        style="
+                        --swiper-navigation-color: #fff;
+                        --swiper-pagination-color: #fff;
+                     "
+                        class="swiper mySwiper-main2"
+                >
+                    <div class="swiper-wrapper sw-main2"></div>
+                </div>
+                <div class="swiper mySwiper-sub2">
+                    <div class="swiper-wrapper sw-sub2"></div>
+                </div>
+            </div>
+            <div class="poster-threef">
+                <div
+                        style="
+                        --swiper-navigation-color: #fff;
+                        --swiper-pagination-color: #fff;
+                     "
+                        class="swiper mySwiper-main3"
+                >
+                    <div class="swiper-wrapper sw-main3"></div>
+                </div>
+                <div class="swiper mySwiper-sub3">
+                    <div class="swiper-wrapper sw-sub3"></div>
+                </div>
+            </div>
+            <div class="poster-fourf">
+                <div
+                        style="
+                        --swiper-navigation-color: #fff;
+                        --swiper-pagination-color: #fff;
+                     "
+                        class="swiper mySwiper-main4"
+                >
+                    <div class="swiper-wrapper sw-main4"></div>
+                </div>
+                <div class="swiper mySwiper-sub4">
+                    <div class="swiper-wrapper sw-sub4"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Now playing -->
+        <section>
+            <h2>
+                <a href="./menu?site=now_playing&page=1">현재 상영중</a>
+            </h2>
+            <div class="swiper mySwiper-now">
+                <div class="swiper-wrapper sw-now"></div>
+            </div>
+        </section>
+        <!-- 인기 영화 -->
+        <section>
+            <h2><a href="./menu?site=popular&page=1">인기 영화</a></h2>
+            <div class="swiper mySwiper-now">
+                <div class="swiper-wrapper sw-pop"></div>
+            </div>
+        </section>
+        <!-- 최고 평점 -->
+        <section>
+            <h2>
+                <a href="./menu?site=top_rated&page=1">최고 평점</a>
+            </h2>
+            <div class="swiper mySwiper-now">
+                <div class="swiper-wrapper sw-top"></div>
+            </div>
+        </section>
+        <!-- 개봉 예정 -->
+        <section>
+            <h2><a href="./menu?site=upcoming&page=1">개봉 예정</a></h2>
+            <div class="swiper mySwiper-now">
+                <div class="swiper-wrapper sw-upc"></div>
+            </div>
+        </section>
+    </main>
+    <th:block layout:fragment="script">
+        <script th:src="@{js/index.js}"></script>
+    </th:block>
+</html>

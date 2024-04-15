@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<main layout:fragment="content" class="main container">
+    <div class="container-fluid">
+        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                    <form action="/charge" method="post">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+
+                        <a href="/" class="">
+                            <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>MovieTheater</h3>
+                        </a>
+                        <h3>충전</h3>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="charge"
+                               name="charge" placeholder="충전할 금액">
+                    </div>
+                        <input type="hidden" name="name" th:value="${session.name}" />
+                        <input type="hidden" name="balance" th:value="${session.balance}" />
+                    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">충전하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

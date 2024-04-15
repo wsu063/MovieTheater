@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.MovieTheater.dao.ReviewDao">
+    <resultMap id="Member" type="Member">
+        <result column="member_id" property="memberId" />
+        <result column="email" property="email" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="reg_date" property="regDate" />
+        <result column="balance" property="balance" />
+    </resultMap>
+
+    <resultMap id="Review" type="Review">
+        <result column="review_id" property="reviewId"/>
+        <result column="subject" property="subject"/>
+        <result column="rate" property="rate"/>
+        <result column="content" property="content"/>
+        <result column="write_date" property="writeDate"/>
+        <result column="update_date" property="updateDate"/>
+        <result column="member_id" property="memberId"/>
+        <result column="movie_id" property="movieId"/>
+        <result column="views" property="views"/>
+        <collection property="movie" resultMap="Movie"/>
+        <collection property="member" resultMap="Member" />
+    </resultMap>
+
+    <resultMap id="Movie" type="Movie">
+        <result column="movie_id" property="movieId"/>
+        <result column="movie_subject" property="movieSubject"/>
+        <result column="content" property="content"/>
+        <result column="open_date" property="openDate"/>
+        <result column="close_date" property="closeDate"/>
+        <!-- property: 변수명, resultMap: ID명       -->
+    </resultMap>
+    <select id="getReviewList" parameterType="map" resultType="Review" resultMap="Review">
+        SELECT * FROM (
+        SELECT rownum rnum, DATA.* from
+        (SELECT p.REVIEW_ID, p.SUBJECT, p.CONTENT, p.MEMBER_ID,
+        TO_CHAR(p.WRITE_DATE, 'YYYY-MM-DD') WRITE_DATE,
+        TO_CHAR(p.UPDATE_DATE, 'YYYY-MM-DD') UPDATE_DATE,
+        p.VIEWS, c.MOVIE_ID, c.movie_subject
+        FROM review p, movie c
+        WHERE p.MOVIE_ID = c.MOVIE_ID
+        AND p.MEMBER_ID = #{memberId}
+        AND ${searchKey} LIKE '%' || #{searchValue} || '%'
+        ORDER BY p.REVIEW_ID DESC) DATA
+        )
+        <![CDATA[
+    WHERE rnum >= #{start} AND rnum <= #{end}
+    ]]>
+    </select>
+    <select id="getDataCount" parameterType="map" resultType="int">
+        SELECT
+        NVL(count(*), 0)
+        FROM review p
+        WHERE p.member_id = #{memberId}
+        AND ${searchKey} LIKE '%' || #{searchValue} || '%'
+    </select>
+    <select id="getMovieCount" parameterType="map" resultType="int">
+        SELECT
+        NVL(count(*), 0)
+        FROM movie p
+    </select>
+
+    <update id="updateHitCount" parameterType="int">
+        update review set views = views + 1 where review_id = #{reviewId}
+    </update>
+
+    <select id="getReviewDetail" parameterType="int" resultType="Review" resultMap="Review">
+        SELECT
+        p.REVIEW_ID , p.SUBJECT , p.RATE, p.CONTENT , p.MEMBER_ID,
+        p.WRITE_DATE , p.UPDATE_DATE , p.VIEWS , p.MOVIE_ID,
+        m.MEMBER_ID , m.NAME , m.EMAIL
+        FROM review p, MTMEMBER m
+        WHERE p.MEMBER_ID = m.MEMBER_ID
+        AND p.REVIEW_ID = #{reviewId}
+    </select>
+
+    <select id="insertReview" parameterType="Review" >
+        insert into Review values(
+        review_seq.nextval, #{subject}, #{rate}, #{content}, sysdate, sysdate, #{memberId}, #{movieId}, 0)
+    </select>
+
+    <update id="updateReview" parameterType="Review" >
+        UPDATE Review
+        SET subject = #{subject}, rate = #{rate}, content = #{content}, UPDATE_DATE = sysdate
+        WHERE REVIEW_ID = #{reviewId}
+    </update>
+
+    <delete id="deleteReview" parameterType="int" >
+        DELETE Review WHERE review_id = #{reviewId}
+    </delete>
+
+</mapper>
